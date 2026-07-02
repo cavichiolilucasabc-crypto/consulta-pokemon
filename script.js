@@ -515,10 +515,11 @@ function alternarPrecisoColecao(termo) {
   const jaExiste = preciso.some(item => item.toLowerCase() === termo.toLowerCase());
 
   if (jaExiste) {
-    preciso = preciso.filter(item => item.toLowerCase() !== termo.toLowerCase());
-  } else {
-    preciso.unshift(termo);
-  }
+  preciso = preciso.filter(item => item.toLowerCase() !== termo.toLowerCase());
+  removerValorPreciso(termo);
+} else {
+  preciso.unshift(termo);
+}
 
   localStorage.setItem("precisoColecaoCartas", JSON.stringify(preciso));
 
