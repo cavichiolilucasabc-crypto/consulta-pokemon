@@ -33,7 +33,6 @@ const nomesPokemon = [
   "Solgaleo", "Lunala",
   "Necrozma",
   "Grookey", "Scorbunny", "Sobble",
-  "Charizard",
   "Dragapult",
   "Zacian", "Zamazenta", "Eternatus",
   "Sprigatito", "Fuecoco", "Quaxly",
@@ -73,8 +72,12 @@ function buscarCarta() {
     termoFinal = formatarCodigoCarta(codigoDigitado);
   }
 
-  abrirNovaAba(termoFinal);
-  salvarHistorico(termoFinal);
+  mostrarAnimacaoBusca(termoFinal);
+
+  setTimeout(function() {
+    abrirNovaAba(termoFinal);
+    salvarHistorico(termoFinal);
+  }, 450);
 
   if (campoCodigo) {
     campoCodigo.value = "";
@@ -124,6 +127,24 @@ function gerarUrlLiga(termo) {
   return `https://www.ligapokemon.com.br/?card=${termoFormatado}&view=cards/search`;
 }
 
+function mostrarAnimacaoBusca(termo) {
+  const resultado = document.getElementById("resultado");
+
+  if (!resultado) {
+    return;
+  }
+
+  resultado.style.display = "block";
+
+  resultado.innerHTML = `
+    <div class="buscando-box">
+      <div class="pokebola-loader"></div>
+      <p>Preparando busca...</p>
+      <strong>${termo}</strong>
+    </div>
+  `;
+}
+
 function abrirNovaAba(termo) {
   const resultado = document.getElementById("resultado");
   const urlLiga = gerarUrlLiga(termo);
@@ -158,8 +179,64 @@ function salvarHistorico(termo) {
   mostrarHistorico();
 }
 
+function removerDoHistorico(termo) {
+  let historico = JSON.parse(localStorage.getItem("historicoCartas")) || [];
+
+  historico = historico.filter(item => item.toLowerCase() !== termo.toLowerCase());
+
+  localStorage.setItem("historicoCartas", JSON.stringify(historico));
+
+  mostrarHistorico();
+}
+
+function alternarFavorito(termo) {
+  let favoritos = JSON.parse(localStorage.getItem("favoritosCartas")) || [];
+
+  const jaExiste = favoritos.some(item => item.toLowerCase() === termo.toLowerCase());
+
+  if (jaExiste) {
+    favoritos = favoritos.filter(item => item.toLowerCase() !== termo.toLowerCase());
+  } else {
+    favoritos.unshift(termo);
+  }
+
+  localStorage.setItem("favoritosCartas", JSON.stringify(favoritos));
+
+  mostrarHistorico();
+  mostrarFavoritos();
+}
+
+function verificarFavorito(termo) {
+  const favoritos = JSON.parse(localStorage.getItem("favoritosCartas")) || [];
+
+  return favoritos.some(item => item.toLowerCase() === termo.toLowerCase());
+}
+
+function copiarPesquisa(termo) {
+  navigator.clipboard.writeText(termo).then(function() {
+    mostrarMensagemCopiado(termo);
+  }).catch(function() {
+    alert("Não foi possível copiar. Copie manualmente: " + termo);
+  });
+}
+
+function mostrarMensagemCopiado(termo) {
+  const resultado = document.getElementById("resultado");
+
+  if (!resultado) {
+    return;
+  }
+
+  resultado.style.display = "block";
+
+  resultado.innerHTML = `
+    <p><strong>Pesquisa copiada:</strong></p>
+    <p>${termo}</p>
+  `;
+}
+
 function escaparTexto(texto) {
-  return texto.replace(/'/g, "\\'");
+  return texto.replace(/\\/g, "\\\\").replace(/'/g, "\\'");
 }
 
 function mostrarHistorico() {
@@ -178,14 +255,80 @@ function mostrarHistorico() {
 
   historicoDiv.innerHTML = `
     <h2>Últimas buscas</h2>
+
     <div class="lista-historico">
-      ${historico.map(item => `
-        <button class="item-historico" onclick="abrirNovaAba('${escaparTexto(item)}')">
-          ${item}
-        </button>
-      `).join("")}
+      ${historico.map(item => {
+        const favorito = verificarFavorito(item);
+        const itemSeguro = escaparTexto(item);
+
+        return `
+          <div class="linha-historico">
+            <button class="texto-historico" onclick="abrirNovaAba('${itemSeguro}')">
+              ${item}
+            </button>
+
+            <div class="acoes-historico">
+              <button class="acao-btn favorito-btn ${favorito ? "ativo" : ""}" onclick="alternarFavorito('${itemSeguro}')">
+                ${favorito ? "★" : "☆"}
+              </button>
+
+              <button class="acao-btn copiar-btn" onclick="copiarPesquisa('${itemSeguro}')">
+                📋
+              </button>
+
+              <button class="acao-btn remover-btn" onclick="removerDoHistorico('${itemSeguro}')">
+                🗑
+              </button>
+            </div>
+          </div>
+        `;
+      }).join("")}
     </div>
+
     <button class="limpar" onclick="limparHistorico()">Limpar histórico</button>
+  `;
+}
+
+function mostrarFavoritos() {
+  const favoritosDiv = document.getElementById("favoritos");
+
+  if (!favoritosDiv) {
+    return;
+  }
+
+  const favoritos = JSON.parse(localStorage.getItem("favoritosCartas")) || [];
+
+  if (favoritos.length === 0) {
+    favoritosDiv.innerHTML = "";
+    return;
+  }
+
+  favoritosDiv.innerHTML = `
+    <h2>Favoritos</h2>
+
+    <div class="lista-historico">
+      ${favoritos.map(item => {
+        const itemSeguro = escaparTexto(item);
+
+        return `
+          <div class="linha-historico favorito-linha">
+            <button class="texto-historico" onclick="abrirNovaAba('${itemSeguro}')">
+              ⭐ ${item}
+            </button>
+
+            <div class="acoes-historico">
+              <button class="acao-btn copiar-btn" onclick="copiarPesquisa('${itemSeguro}')">
+                📋
+              </button>
+
+              <button class="acao-btn remover-btn" onclick="alternarFavorito('${itemSeguro}')">
+                🗑
+              </button>
+            </div>
+          </div>
+        `;
+      }).join("")}
+    </div>
   `;
 }
 
@@ -291,4 +434,5 @@ document.addEventListener("DOMContentLoaded", function() {
   });
 
   mostrarHistorico();
+  mostrarFavoritos();
 });
