@@ -1,16 +1,37 @@
 function buscarCarta() {
   const campo = document.getElementById("campoCarta");
-  const termo = campo.value.trim();
+  const termoDigitado = campo.value.trim();
 
-  if (termo === "") {
+  if (termoDigitado === "") {
     alert("Digite o nome ou código da carta.");
     return;
   }
 
-  abrirNovaAba(termo);
-  salvarHistorico(termo);
+  const termoFinal = formatarCodigoCarta(termoDigitado);
+
+  abrirNovaAba(termoFinal);
+  salvarHistorico(termoFinal);
 
   campo.value = "";
+}
+
+function formatarCodigoCarta(termo) {
+  // Remove espaços
+  let texto = termo.trim();
+
+  // Remove tudo que não for número
+  const somenteNumeros = texto.replace(/\D/g, "");
+
+  // Se tiver exatamente 6 números, transforma 086131 em 086/131
+  if (somenteNumeros.length === 6) {
+    const primeiraParte = somenteNumeros.slice(0, 3);
+    const segundaParte = somenteNumeros.slice(3, 6);
+
+    return `${primeiraParte}/${segundaParte}`;
+  }
+
+  // Se não for esse padrão, mantém o que foi digitado
+  return texto;
 }
 
 function gerarUrlLiga(termo) {
@@ -50,6 +71,10 @@ function salvarHistorico(termo) {
   mostrarHistorico();
 }
 
+function escaparTexto(texto) {
+  return texto.replace(/'/g, "\\'");
+}
+
 function mostrarHistorico() {
   const historicoDiv = document.getElementById("historico");
   const historico = JSON.parse(localStorage.getItem("historicoCartas")) || [];
@@ -63,7 +88,7 @@ function mostrarHistorico() {
     <h2>Últimas buscas</h2>
     <div class="lista-historico">
       ${historico.map(item => `
-        <button class="item-historico" onclick="abrirNovaAba('${item.replace(/'/g, "\\'")}')">
+        <button class="item-historico" onclick="abrirNovaAba('${escaparTexto(item)}')">
           ${item}
         </button>
       `).join("")}
