@@ -265,12 +265,16 @@ function mostrarHistorico() {
               </button>
 
               <button class="acao-btn copiar-btn" onclick="copiarPesquisa('${itemSeguro}')">
-                📋
-              </button>
+  📋
+</button>
 
-              <button class="acao-btn remover-btn" onclick="removerDoHistorico('${itemSeguro}')">
-                🗑
-              </button>
+<button class="acao-btn preciso-btn ${verificarPrecisoColecao(item) ? "ativo" : ""}" onclick="alternarPrecisoColecao('${itemSeguro}')">
+  🎯
+</button>
+
+<button class="acao-btn remover-btn" onclick="removerDoHistorico('${itemSeguro}')">
+  🗑
+</button>
             </div>
           </div>
         `;
@@ -310,12 +314,16 @@ function mostrarFavoritos() {
 
             <div class="acoes-historico">
               <button class="acao-btn copiar-btn" onclick="copiarPesquisa('${itemSeguro}')">
-                📋
-              </button>
+  📋
+</button>
 
-              <button class="acao-btn remover-btn" onclick="alternarFavorito('${itemSeguro}')">
-                🗑
-              </button>
+<button class="acao-btn preciso-btn ${verificarPrecisoColecao(item) ? "ativo" : ""}" onclick="alternarPrecisoColecao('${itemSeguro}')">
+  🎯
+</button>
+
+<button class="acao-btn remover-btn" onclick="alternarFavorito('${itemSeguro}')">
+  🗑
+</button>
             </div>
           </div>
         `;
@@ -472,6 +480,103 @@ function atualizarTextoBotaoTema(tema) {
   if (tema === "tema-claro") {
     botao.innerHTML = "☀️ Tema: Claro";
   }
+}
+function mostrarAba(nomeAba) {
+  const abas = document.querySelectorAll(".aba-conteudo");
+  const botoes = document.querySelectorAll(".aba-btn");
+
+  abas.forEach(function(aba) {
+    aba.classList.remove("ativa");
+  });
+
+  botoes.forEach(function(botao) {
+    botao.classList.remove("ativa");
+  });
+
+  if (nomeAba === "historico") {
+    document.getElementById("abaHistorico").classList.add("ativa");
+    botoes[0].classList.add("ativa");
+  }
+
+  if (nomeAba === "favoritos") {
+    document.getElementById("abaFavoritos").classList.add("ativa");
+    botoes[1].classList.add("ativa");
+  }
+
+  if (nomeAba === "preciso") {
+    document.getElementById("abaPreciso").classList.add("ativa");
+    botoes[2].classList.add("ativa");
+  }
+}
+
+function alternarPrecisoColecao(termo) {
+  let preciso = JSON.parse(localStorage.getItem("precisoColecaoCartas")) || [];
+
+  const jaExiste = preciso.some(item => item.toLowerCase() === termo.toLowerCase());
+
+  if (jaExiste) {
+    preciso = preciso.filter(item => item.toLowerCase() !== termo.toLowerCase());
+  } else {
+    preciso.unshift(termo);
+  }
+
+  localStorage.setItem("precisoColecaoCartas", JSON.stringify(preciso));
+
+  mostrarHistorico();
+  mostrarFavoritos();
+  mostrarPrecisoColecao();
+}
+
+function verificarPrecisoColecao(termo) {
+  const preciso = JSON.parse(localStorage.getItem("precisoColecaoCartas")) || [];
+
+  return preciso.some(item => item.toLowerCase() === termo.toLowerCase());
+}
+
+function mostrarPrecisoColecao() {
+  const precisoDiv = document.getElementById("precisoColecao");
+
+  if (!precisoDiv) {
+    return;
+  }
+
+  const preciso = JSON.parse(localStorage.getItem("precisoColecaoCartas")) || [];
+
+  if (preciso.length === 0) {
+    precisoDiv.innerHTML = `
+      <h2>Faltam na coleção</h2>
+      <p class="lista-vazia">Nenhuma carta marcada ainda.</p>
+    `;
+    return;
+  }
+
+  precisoDiv.innerHTML = `
+    <h2>Faltam na coleção</h2>
+
+    <div class="lista-historico">
+      ${preciso.map(item => {
+        const itemSeguro = escaparTexto(item);
+
+        return `
+          <div class="linha-historico preciso-linha">
+            <button class="texto-historico" onclick="abrirNovaAba('${itemSeguro}')">
+              🎯 ${item}
+            </button>
+
+            <div class="acoes-historico">
+              <button class="acao-btn copiar-btn" onclick="copiarPesquisa('${itemSeguro}')">
+                📋
+              </button>
+
+              <button class="acao-btn remover-btn" onclick="alternarPrecisoColecao('${itemSeguro}')">
+                🗑
+              </button>
+            </div>
+          </div>
+        `;
+      }).join("")}
+    </div>
+  `;
 }
 
 document.addEventListener("DOMContentLoaded", aplicarTemaSalvo);
