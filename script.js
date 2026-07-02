@@ -13,3 +13,9 @@ function buscarCarta() {
 
   window.open(urlLiga, "_blank");
 }
+
+document.getElementById("campoCarta").addEventListener("keydown", function(event) {
+  if (event.key === "Enter") {
+    buscarCarta();
+  }
+});
