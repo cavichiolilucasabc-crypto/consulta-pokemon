@@ -883,3 +883,115 @@ body.tema-claro .limpar {
     font-size: 13px;
   }
 }
+/* Ajuste compacto da aba Preciso */
+
+.linha-preciso {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  background: #1f2937;
+  border: 2px solid #a855f7;
+  border-radius: 14px;
+  padding: 10px;
+}
+
+.preciso-topo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+}
+
+.texto-preciso-info {
+  flex: 1;
+  min-width: 0;
+  background: #1f2937;
+  color: #ffffff;
+  text-align: left;
+  padding: 12px;
+  border-radius: 10px;
+  border: 2px solid #a855f7;
+  font-weight: bold;
+  word-break: break-word;
+}
+
+.valor-salvo {
+  color: #facc15;
+  font-weight: bold;
+  margin-left: 4px;
+}
+
+.acoes-preciso-compactas {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin-left: auto;
+}
+
+.acao-mini {
+  width: 34px !important;
+  min-width: 34px !important;
+  height: 34px !important;
+  padding: 0 !important;
+  border-radius: 9px !important;
+  font-size: 13px !important;
+  box-shadow: none !important;
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+}
+
+.abrir-mini {
+  background: linear-gradient(145deg, #22c55e, #16a34a) !important;
+  color: #052e16 !important;
+}
+
+.editar-mini {
+  background: linear-gradient(145deg, #38bdf8, #0284c7) !important;
+  color: #ffffff !important;
+}
+
+.remover-mini {
+  background: linear-gradient(145deg, #ef4444, #b91c1c) !important;
+  color: #ffffff !important;
+}
+
+.editar-valor-btn {
+  display: none !important;
+}
+
+.linha-preciso .acoes-historico {
+  display: none !important;
+}
+
+.linha-preciso .preco-area {
+  margin-top: 8px;
+}
+
+@media (max-width: 520px) {
+  .preciso-topo {
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .texto-preciso-info {
+    font-size: 14px;
+    padding: 10px;
+  }
+
+  .valor-salvo {
+    display: inline;
+    margin-left: 4px;
+  }
+
+  .acoes-preciso-compactas {
+    gap: 4px;
+  }
+
+  .acao-mini {
+    width: 30px !important;
+    min-width: 30px !important;
+    height: 30px !important;
+    font-size: 12px !important;
+  }
+}
