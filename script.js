@@ -567,23 +567,27 @@ function mostrarPrecisoColecao() {
         return `
           <div class="linha-preciso">
             <div class="preciso-topo">
-              <button class="texto-historico texto-preciso texto-preciso-compacto" onclick="abrirNovaAba('${itemSeguro}')">
+              <div class="texto-preciso-info">
                 🎯 ${item}
                 ${temValor ? `<span class="valor-salvo">— ${valorSalvo}</span>` : ""}
-              </button>
+              </div>
 
               <div class="acoes-preciso-compactas">
+                <button class="acao-mini abrir-mini" onclick="abrirNovaAba('${itemSeguro}')" title="Abrir carta">
+                  🔎
+                </button>
+
                 ${
                   temValor
                     ? `
-                      <button class="acao-mini editar-mini" onclick="editarValorPreciso('${itemSeguro}')">
+                      <button class="acao-mini editar-mini" onclick="editarValorPreciso('${itemSeguro}')" title="Editar valor">
                         ✏️
                       </button>
                     `
                     : ""
                 }
 
-                <button class="acao-mini remover-mini" onclick="alternarPrecisoColecao('${itemSeguro}')">
+                <button class="acao-mini remover-mini" onclick="alternarPrecisoColecao('${itemSeguro}')" title="Remover carta">
                   🗑
                 </button>
               </div>
@@ -614,7 +618,6 @@ function mostrarPrecisoColecao() {
     </div>
   `;
 }
-
 document.addEventListener("DOMContentLoaded", aplicarTemaSalvo);
 function criarIdSeguro(texto) {
   return texto
