@@ -566,10 +566,28 @@ function mostrarPrecisoColecao() {
 
         return `
           <div class="linha-preciso">
-            <button class="texto-historico texto-preciso" onclick="abrirNovaAba('${itemSeguro}')">
-              🎯 ${item}
-              ${temValor ? `<span class="valor-salvo">— ${valorSalvo}</span>` : ""}
-            </button>
+            <div class="preciso-topo">
+              <button class="texto-historico texto-preciso texto-preciso-compacto" onclick="abrirNovaAba('${itemSeguro}')">
+                🎯 ${item}
+                ${temValor ? `<span class="valor-salvo">— ${valorSalvo}</span>` : ""}
+              </button>
+
+              <div class="acoes-preciso-compactas">
+                ${
+                  temValor
+                    ? `
+                      <button class="acao-mini editar-mini" onclick="editarValorPreciso('${itemSeguro}')">
+                        ✏️
+                      </button>
+                    `
+                    : ""
+                }
+
+                <button class="acao-mini remover-mini" onclick="alternarPrecisoColecao('${itemSeguro}')">
+                  🗑
+                </button>
+              </div>
+            </div>
 
             ${
               !temValor || estaEditando
@@ -588,22 +606,8 @@ function mostrarPrecisoColecao() {
                     </button>
                   </div>
                 `
-                : `
-                  <button class="editar-valor-btn" onclick="editarValorPreciso('${itemSeguro}')">
-                    Editar valor
-                  </button>
-                `
+                : ""
             }
-
-            <div class="acoes-historico">
-              <button class="acao-btn copiar-btn" onclick="copiarPesquisa('${itemSeguro}')">
-                📋
-              </button>
-
-              <button class="acao-btn remover-btn" onclick="alternarPrecisoColecao('${itemSeguro}')">
-                🗑
-              </button>
-            </div>
           </div>
         `;
       }).join("")}
