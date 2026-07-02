@@ -150,16 +150,8 @@ function abrirNovaAba(termo) {
   const urlLiga = gerarUrlLiga(termo);
 
   if (resultado) {
-    resultado.style.display = "block";
-
-    resultado.innerHTML = `
-      <p>Buscando por: <strong>${termo}</strong></p>
-      <p>
-        <a href="${urlLiga}" target="_blank">
-          Abrir resultado na Liga Pokémon
-        </a>
-      </p>
-    `;
+    resultado.style.display = "none";
+    resultado.innerHTML = "";
   }
 
   window.open(urlLiga, "_blank");
