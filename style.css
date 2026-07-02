@@ -669,3 +669,60 @@ body.tema-claro .limpar {
     padding: 11px;
   }
 }
+.abas-area {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin-top: 18px;
+}
+
+.aba-btn {
+  padding: 11px 8px;
+  border-radius: 12px;
+  font-size: 13px;
+  box-shadow: 0 4px 0 #854d0e;
+}
+
+.aba-btn.ativa {
+  background: linear-gradient(145deg, #22c55e, #16a34a);
+  color: #052e16;
+  box-shadow: 0 4px 0 #166534;
+}
+
+.aba-conteudo {
+  display: none;
+}
+
+.aba-conteudo.ativa {
+  display: block;
+}
+
+.preciso-btn {
+  background: linear-gradient(145deg, #a855f7, #7e22ce);
+  color: #ffffff;
+}
+
+.preciso-btn.ativo {
+  background: linear-gradient(145deg, #22c55e, #16a34a);
+  color: #052e16;
+}
+
+.preciso-linha .texto-historico {
+  border-color: #a855f7;
+}
+
+.lista-vazia {
+  text-align: center;
+  color: #fee2e2;
+  margin: 8px 0 0;
+}
+
+@media (max-width: 520px) {
+  .abas-area {
+    grid-template-columns: 1fr;
+  }
+
+  .aba-btn {
+    width: 100%;
+  }
+}
