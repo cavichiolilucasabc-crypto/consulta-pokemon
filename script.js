@@ -9,6 +9,14 @@ function buscarCarta() {
     return;
   }
 
+  abrirResultado(termo);
+  salvarHistorico(termo);
+
+  campo.value = "";
+}
+
+function abrirResultado(termo) {
+  const resultado = document.getElementById("resultado");
   const termoFormatado = encodeURIComponent(termo);
 
   const urlLiga = `https://www.ligapokemon.com.br/?card=${termoFormatado}&view=cards/search`;
@@ -25,6 +33,47 @@ function buscarCarta() {
   `;
 }
 
+function salvarHistorico(termo) {
+  let historico = JSON.parse(localStorage.getItem("historicoCartas")) || [];
+
+  historico = historico.filter(item => item.toLowerCase() !== termo.toLowerCase());
+
+  historico.unshift(termo);
+
+  historico = historico.slice(0, 10);
+
+  localStorage.setItem("historicoCartas", JSON.stringify(historico));
+
+  mostrarHistorico();
+}
+
+function mostrarHistorico() {
+  const historicoDiv = document.getElementById("historico");
+  const historico = JSON.parse(localStorage.getItem("historicoCartas")) || [];
+
+  if (historico.length === 0) {
+    historicoDiv.innerHTML = "";
+    return;
+  }
+
+  historicoDiv.innerHTML = `
+    <h2>Últimas buscas</h2>
+    <div class="lista-historico">
+      ${historico.map(item => `
+        <button class="item-historico" onclick="abrirResultado('${item.replace(/'/g, "\\'")}')">
+          ${item}
+        </button>
+      `).join("")}
+    </div>
+    <button class="limpar" onclick="limparHistorico()">Limpar histórico</button>
+  `;
+}
+
+function limparHistorico() {
+  localStorage.removeItem("historicoCartas");
+  mostrarHistorico();
+}
+
 document.addEventListener("DOMContentLoaded", function() {
   const campo = document.getElementById("campoCarta");
 
@@ -33,4 +82,6 @@ document.addEventListener("DOMContentLoaded", function() {
       buscarCarta();
     }
   });
+
+  mostrarHistorico();
 });
