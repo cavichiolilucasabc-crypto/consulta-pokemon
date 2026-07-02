@@ -445,26 +445,30 @@ function buscarCarta() {
   const campoCodigo = document.getElementById("campoCarta");
 
   const nomePokemon = campoPokemon ? campoPokemon.value.trim() : "";
-  const codigoDigitado = campoCodigo.value.trim();
+  const codigoDigitado = campoCodigo ? campoCodigo.value.trim() : "";
 
-  if (nomePokemon === "") {
-    alert("Digite ou selecione o nome do Pokémon.");
+  if (nomePokemon === "" && codigoDigitado === "") {
+    alert("Digite o nome do Pokémon, o código da carta ou os dois.");
     return;
   }
 
-  if (codigoDigitado === "") {
-    alert("Digite o código da carta.");
-    return;
+  let termoFinal = "";
+
+  if (nomePokemon !== "" && codigoDigitado !== "") {
+    const codigoFormatado = formatarCodigoCarta(codigoDigitado);
+    termoFinal = `${nomePokemon} ${codigoFormatado}`;
+  } else if (nomePokemon !== "") {
+    termoFinal = nomePokemon;
+  } else if (codigoDigitado !== "") {
+    termoFinal = formatarCodigoCarta(codigoDigitado);
   }
-
-  const codigoFormatado = formatarCodigoCarta(codigoDigitado);
-
-  const termoFinal = `${nomePokemon} ${codigoFormatado}`;
 
   abrirNovaAba(termoFinal);
   salvarHistorico(termoFinal);
 
-  campoCodigo.value = "";
+  if (campoCodigo) {
+    campoCodigo.value = "";
+  }
 }
 
 function formatarCodigoCarta(termo) {
