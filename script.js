@@ -44,6 +44,7 @@ const nomesPokemon = [
   "Koraidon", "Miraidon",
   "Ogerpon", "Terapagos"
 ];
+let valorPrecisoEmEdicao = null;
 
 function buscarCarta() {
   const campoPokemon = document.getElementById("campoPokemon");
@@ -560,26 +561,39 @@ function mostrarPrecisoColecao() {
         const itemSeguro = escaparTexto(item);
         const idSeguro = criarIdSeguro(item);
         const valorSalvo = valores[item] || "";
+        const estaEditando = valorPrecisoEmEdicao === item;
+        const temValor = valorSalvo.trim() !== "";
 
         return `
           <div class="linha-preciso">
             <button class="texto-historico texto-preciso" onclick="abrirNovaAba('${itemSeguro}')">
               🎯 ${item}
+              ${temValor ? `<span class="valor-salvo">— ${valorSalvo}</span>` : ""}
             </button>
 
-            <div class="preco-area">
-              <input 
-                type="text" 
-                id="preco-${idSeguro}" 
-                class="preco-input" 
-                placeholder="Valor encontrado. Ex: 12,50"
-                value="${valorSalvo}"
-              >
+            ${
+              !temValor || estaEditando
+                ? `
+                  <div class="preco-area">
+                    <input 
+                      type="text" 
+                      id="preco-${idSeguro}" 
+                      class="preco-input" 
+                      placeholder="Valor encontrado. Ex: 13,50"
+                      value="${valorSalvo}"
+                    >
 
-              <button class="preco-salvar-btn" onclick="salvarValorPreciso('${itemSeguro}')">
-                Salvar valor
-              </button>
-            </div>
+                    <button class="preco-salvar-btn" onclick="salvarValorPreciso('${itemSeguro}')">
+                      Salvar valor
+                    </button>
+                  </div>
+                `
+                : `
+                  <button class="editar-valor-btn" onclick="editarValorPreciso('${itemSeguro}')">
+                    Editar valor
+                  </button>
+                `
+            }
 
             <div class="acoes-historico">
               <button class="acao-btn copiar-btn" onclick="copiarPesquisa('${itemSeguro}')">
@@ -629,17 +643,13 @@ function salvarValorPreciso(termo) {
 
   localStorage.setItem("valoresPrecisoColecao", JSON.stringify(valores));
 
+  valorPrecisoEmEdicao = null;
+
   mostrarPrecisoColecao();
-
-  const resultado = document.getElementById("resultado");
-
-  if (resultado) {
-    resultado.style.display = "block";
-    resultado.innerHTML = `
-      <p><strong>Valor salvo:</strong></p>
-      <p>${termo} — ${valor || "sem valor"}</p>
-    `;
-  }
+}
+function editarValorPreciso(termo) {
+  valorPrecisoEmEdicao = termo;
+  mostrarPrecisoColecao();
 }
 
 function removerValorPreciso(termo) {
