@@ -470,10 +470,32 @@ function buscarCarta() {
 function formatarCodigoCarta(termo) {
   let texto = termo.trim();
 
+  // Remove espaços
   texto = texto.replace(/\s+/g, "");
 
+  // Remove tudo que não for número
   const somenteNumeros = texto.replace(/\D/g, "");
 
+  // Exemplo: 886 vira 008/086
+  // Exemplo: 186 vira 001/086
+  if (somenteNumeros.length === 3) {
+    const primeiraParte = somenteNumeros.slice(0, 1).padStart(3, "0");
+    const segundaParte = somenteNumeros.slice(1, 3).padStart(3, "0");
+
+    return `${primeiraParte}/${segundaParte}`;
+  }
+
+  // Exemplo: 8131 vira 008/131
+  // Exemplo: 1091 vira 001/091
+  if (somenteNumeros.length === 4) {
+    const primeiraParte = somenteNumeros.slice(0, 1).padStart(3, "0");
+    const segundaParte = somenteNumeros.slice(1, 4);
+
+    return `${primeiraParte}/${segundaParte}`;
+  }
+
+  // Exemplo: 84131 vira 084/131
+  // Exemplo: 25198 vira 025/198
   if (somenteNumeros.length === 5) {
     const primeiraParte = somenteNumeros.slice(0, 2).padStart(3, "0");
     const segundaParte = somenteNumeros.slice(2, 5);
@@ -481,6 +503,8 @@ function formatarCodigoCarta(termo) {
     return `${primeiraParte}/${segundaParte}`;
   }
 
+  // Exemplo: 084131 vira 084/131
+  // Exemplo: 025198 vira 025/198
   if (somenteNumeros.length === 6) {
     const primeiraParte = somenteNumeros.slice(0, 3);
     const segundaParte = somenteNumeros.slice(3, 6);
@@ -488,6 +512,7 @@ function formatarCodigoCarta(termo) {
     return `${primeiraParte}/${segundaParte}`;
   }
 
+  // Se não for código de 3, 4, 5 ou 6 números, mantém o que foi digitado
   return termo.trim();
 }
 
