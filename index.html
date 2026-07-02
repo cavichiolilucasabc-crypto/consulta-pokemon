@@ -47,9 +47,31 @@
 
     <div id="resultado" class="resultado"></div>
 
-    <div id="favoritos" class="historico"></div>
+<div class="abas-area">
+  <button class="aba-btn ativa" onclick="mostrarAba('historico')">
+    Últimas buscas
+  </button>
 
-    <div id="historico" class="historico"></div>
+  <button class="aba-btn" onclick="mostrarAba('favoritos')">
+    Favoritos
+  </button>
+
+  <button class="aba-btn" onclick="mostrarAba('preciso')">
+    Preciso
+  </button>
+</div>
+
+<div id="abaHistorico" class="aba-conteudo ativa">
+  <div id="historico" class="historico"></div>
+</div>
+
+<div id="abaFavoritos" class="aba-conteudo">
+  <div id="favoritos" class="historico"></div>
+</div>
+
+<div id="abaPreciso" class="aba-conteudo">
+  <div id="precisoColecao" class="historico"></div>
+</div>
   </main>
 
   <script src="script.js"></script>
