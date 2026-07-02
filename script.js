@@ -1,5 +1,7 @@
 function buscarCarta() {
   const campo = document.getElementById("campoCarta");
+  const resultado = document.getElementById("resultado");
+
   const termo = campo.value.trim();
 
   if (termo === "") {
@@ -11,11 +13,24 @@ function buscarCarta() {
 
   const urlLiga = `https://www.ligapokemon.com.br/?card=${termoFormatado}&view=cards/search`;
 
-  window.open(urlLiga, "_blank");
+  resultado.style.display = "block";
+
+  resultado.innerHTML = `
+    <p>Buscando por: <strong>${termo}</strong></p>
+    <p>
+      <a href="${urlLiga}" target="_blank">
+        Abrir resultado na Liga Pokémon
+      </a>
+    </p>
+  `;
 }
 
-document.getElementById("campoCarta").addEventListener("keydown", function(event) {
-  if (event.key === "Enter") {
-    buscarCarta();
-  }
+document.addEventListener("DOMContentLoaded", function() {
+  const campo = document.getElementById("campoCarta");
+
+  campo.addEventListener("keydown", function(event) {
+    if (event.key === "Enter") {
+      buscarCarta();
+    }
+  });
 });
