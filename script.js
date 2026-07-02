@@ -436,3 +436,50 @@ document.addEventListener("DOMContentLoaded", function() {
   mostrarHistorico();
   mostrarFavoritos();
 });
+const temasDisponiveis = ["tema-pokedex", "tema-escuro", "tema-claro"];
+
+function aplicarTemaSalvo() {
+  const temaSalvo = localStorage.getItem("temaAppPokemon") || "tema-pokedex";
+
+  document.body.classList.remove("tema-pokedex", "tema-escuro", "tema-claro");
+  document.body.classList.add(temaSalvo);
+
+  atualizarTextoBotaoTema(temaSalvo);
+}
+
+function alternarTema() {
+  const temaAtual = localStorage.getItem("temaAppPokemon") || "tema-pokedex";
+
+  const indiceAtual = temasDisponiveis.indexOf(temaAtual);
+  const proximoIndice = (indiceAtual + 1) % temasDisponiveis.length;
+  const proximoTema = temasDisponiveis[proximoIndice];
+
+  localStorage.setItem("temaAppPokemon", proximoTema);
+
+  document.body.classList.remove("tema-pokedex", "tema-escuro", "tema-claro");
+  document.body.classList.add(proximoTema);
+
+  atualizarTextoBotaoTema(proximoTema);
+}
+
+function atualizarTextoBotaoTema(tema) {
+  const botao = document.querySelector(".tema-btn");
+
+  if (!botao) {
+    return;
+  }
+
+  if (tema === "tema-pokedex") {
+    botao.innerHTML = "🎨 Tema: Pokédex";
+  }
+
+  if (tema === "tema-escuro") {
+    botao.innerHTML = "🌙 Tema: Escuro";
+  }
+
+  if (tema === "tema-claro") {
+    botao.innerHTML = "☀️ Tema: Claro";
+  }
+}
+
+document.addEventListener("DOMContentLoaded", aplicarTemaSalvo);
