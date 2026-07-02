@@ -4,18 +4,32 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Consulta de Cartas Pokémon</title>
-  <meta name="theme-color" content="#111827">
-  <link rel="manifest" href="manifest.json">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-  <script src="script.js"></script>
+  <main class="container">
+    <h1>Consulta de Cartas Pokémon</h1>
 
-<script>
-  if ("serviceWorker" in navigator) {
-    navigator.serviceWorker.register("service-worker.js");
-  }
-</script>
+    <p class="descricao">
+      Digite o nome, número ou código da carta para buscar direto na Liga Pokémon.
+    </p>
+
+    <div class="box-busca">
+      <input 
+        type="text" 
+        id="campoCarta" 
+        placeholder="Ex: Pikachu, Charizard, 025/198"
+      >
+
+      <button onclick="buscarCarta()">
+        Buscar preço
+      </button>
+    </div>
+
+    <div id="resultado" class="resultado"></div>
+  </main>
+
+  <script src="script.js"></script>
 </body>
 </html>
