@@ -771,3 +771,37 @@ body.tema-claro .limpar {
     width: 100%;
   }
 }
+.valor-salvo {
+  display: inline-block;
+  margin-left: 6px;
+  color: #facc15;
+  font-weight: bold;
+}
+
+.editar-valor-btn {
+  width: auto;
+  align-self: flex-start;
+  padding: 8px 12px;
+  font-size: 13px;
+  border-radius: 999px;
+  background: linear-gradient(145deg, #38bdf8, #0284c7);
+  color: #ffffff;
+  box-shadow: 0 3px 0 #075985;
+}
+
+.editar-valor-btn:hover {
+  background: linear-gradient(145deg, #7dd3fc, #0ea5e9);
+}
+
+@media (max-width: 520px) {
+  .editar-valor-btn {
+    width: 100%;
+    align-self: stretch;
+  }
+
+  .valor-salvo {
+    display: block;
+    margin-left: 0;
+    margin-top: 4px;
+  }
+}
