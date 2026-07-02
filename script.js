@@ -1,28 +1,51 @@
 function buscarCarta() {
   const campo = document.getElementById("campoCarta");
-  const termoDigitado = campo.value.trim();
+  const campoExtra = document.getElementById("campoExtra");
 
-  if (termoDigitado === "") {
-    alert("Digite o nome ou código da carta.");
+  const codigoDigitado = campo.value.trim();
+  const extraDigitado = campoExtra ? campoExtra.value.trim() : "";
+
+  if (codigoDigitado === "") {
+    alert("Digite o código da carta.");
     return;
   }
 
-  const termoFinal = formatarCodigoCarta(termoDigitado);
+  const codigoFormatado = formatarCodigoCarta(codigoDigitado);
+
+  let termoFinal = codigoFormatado;
+
+  if (extraDigitado !== "") {
+    termoFinal = `${codigoFormatado} ${extraDigitado}`;
+  }
 
   abrirNovaAba(termoFinal);
   salvarHistorico(termoFinal);
 
   campo.value = "";
+
+  if (campoExtra) {
+    campoExtra.value = "";
+  }
 }
 
 function formatarCodigoCarta(termo) {
-  // Remove espaços
   let texto = termo.trim();
+
+  // Remove espaços
+  texto = texto.replace(/\s+/g, "");
 
   // Remove tudo que não for número
   const somenteNumeros = texto.replace(/\D/g, "");
 
-  // Se tiver exatamente 6 números, transforma 086131 em 086/131
+  // Exemplo: 84131 vira 084/131
+  if (somenteNumeros.length === 5) {
+    const primeiraParte = somenteNumeros.slice(0, 2).padStart(3, "0");
+    const segundaParte = somenteNumeros.slice(2, 5);
+
+    return `${primeiraParte}/${segundaParte}`;
+  }
+
+  // Exemplo: 084131 vira 084/131
   if (somenteNumeros.length === 6) {
     const primeiraParte = somenteNumeros.slice(0, 3);
     const segundaParte = somenteNumeros.slice(3, 6);
@@ -30,8 +53,8 @@ function formatarCodigoCarta(termo) {
     return `${primeiraParte}/${segundaParte}`;
   }
 
-  // Se não for esse padrão, mantém o que foi digitado
-  return texto;
+  // Se não for código de 5 ou 6 números, mantém o que foi digitado
+  return termo.trim();
 }
 
 function gerarUrlLiga(termo) {
@@ -77,6 +100,11 @@ function escaparTexto(texto) {
 
 function mostrarHistorico() {
   const historicoDiv = document.getElementById("historico");
+
+  if (!historicoDiv) {
+    return;
+  }
+
   const historico = JSON.parse(localStorage.getItem("historicoCartas")) || [];
 
   if (historico.length === 0) {
@@ -104,12 +132,23 @@ function limparHistorico() {
 
 document.addEventListener("DOMContentLoaded", function() {
   const campo = document.getElementById("campoCarta");
+  const campoExtra = document.getElementById("campoExtra");
 
-  campo.addEventListener("keydown", function(event) {
-    if (event.key === "Enter") {
-      buscarCarta();
-    }
-  });
+  if (campo) {
+    campo.addEventListener("keydown", function(event) {
+      if (event.key === "Enter") {
+        buscarCarta();
+      }
+    });
+  }
+
+  if (campoExtra) {
+    campoExtra.addEventListener("keydown", function(event) {
+      if (event.key === "Enter") {
+        buscarCarta();
+      }
+    });
+  }
 
   mostrarHistorico();
 });
