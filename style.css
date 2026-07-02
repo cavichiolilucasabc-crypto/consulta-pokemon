@@ -337,3 +337,117 @@ button:active {
     padding: 14px;
   }
 }
+.linha-historico {
+  display: flex;
+  align-items: stretch;
+  gap: 8px;
+  width: 100%;
+}
+
+.texto-historico {
+  flex: 1;
+  background: #1f2937;
+  color: #ffffff;
+  text-align: left;
+  padding: 12px;
+  border-radius: 10px;
+  border: 2px solid #4b5563;
+  box-shadow: none;
+}
+
+.acoes-historico {
+  display: flex;
+  gap: 6px;
+}
+
+.acao-btn {
+  width: 42px;
+  min-width: 42px;
+  padding: 0;
+  border-radius: 10px;
+  box-shadow: none;
+  font-size: 16px;
+}
+
+.favorito-btn {
+  background: #374151;
+  color: #ffffff;
+}
+
+.favorito-btn.ativo {
+  background: linear-gradient(145deg, #facc15, #eab308);
+  color: #111827;
+}
+
+.copiar-btn {
+  background: linear-gradient(145deg, #38bdf8, #0284c7);
+  color: #ffffff;
+}
+
+.remover-btn {
+  background: linear-gradient(145deg, #ef4444, #b91c1c);
+  color: #ffffff;
+}
+
+.favorito-linha .texto-historico {
+  border-color: #facc15;
+}
+
+.buscando-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  text-align: center;
+}
+
+.pokebola-loader {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background:
+    linear-gradient(to bottom, #ef4444 0%, #ef4444 48%, #111827 48%, #111827 54%, #ffffff 54%, #ffffff 100%);
+  border: 3px solid #111827;
+  position: relative;
+  animation: girarPokebola 0.7s linear infinite;
+}
+
+.pokebola-loader::before {
+  content: "";
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  background: #ffffff;
+  border: 3px solid #111827;
+  border-radius: 50%;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+@keyframes girarPokebola {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (max-width: 520px) {
+  .linha-historico {
+    flex-direction: column;
+  }
+
+  .acoes-historico {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .acao-btn {
+    width: 100%;
+    min-width: 0;
+    padding: 10px;
+  }
+}
