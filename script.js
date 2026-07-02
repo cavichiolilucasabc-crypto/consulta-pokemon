@@ -541,6 +541,7 @@ function mostrarPrecisoColecao() {
   }
 
   const preciso = JSON.parse(localStorage.getItem("precisoColecaoCartas")) || [];
+  const valores = obterValoresPreciso();
 
   if (preciso.length === 0) {
     precisoDiv.innerHTML = `
@@ -556,12 +557,28 @@ function mostrarPrecisoColecao() {
     <div class="lista-historico">
       ${preciso.map(item => {
         const itemSeguro = escaparTexto(item);
+        const idSeguro = criarIdSeguro(item);
+        const valorSalvo = valores[item] || "";
 
         return `
-          <div class="linha-historico preciso-linha">
-            <button class="texto-historico" onclick="abrirNovaAba('${itemSeguro}')">
+          <div class="linha-preciso">
+            <button class="texto-historico texto-preciso" onclick="abrirNovaAba('${itemSeguro}')">
               🎯 ${item}
             </button>
+
+            <div class="preco-area">
+              <input 
+                type="text" 
+                id="preco-${idSeguro}" 
+                class="preco-input" 
+                placeholder="Valor encontrado. Ex: 12,50"
+                value="${valorSalvo}"
+              >
+
+              <button class="preco-salvar-btn" onclick="salvarValorPreciso('${itemSeguro}')">
+                Salvar valor
+              </button>
+            </div>
 
             <div class="acoes-historico">
               <button class="acao-btn copiar-btn" onclick="copiarPesquisa('${itemSeguro}')">
@@ -580,3 +597,54 @@ function mostrarPrecisoColecao() {
 }
 
 document.addEventListener("DOMContentLoaded", aplicarTemaSalvo);
+function criarIdSeguro(texto) {
+  return texto
+    .toLowerCase()
+    .replace(/[^a-z0-9]/g, "-")
+    .replace(/-+/g, "-");
+}
+
+function obterValoresPreciso() {
+  return JSON.parse(localStorage.getItem("valoresPrecisoColecao")) || {};
+}
+
+function salvarValorPreciso(termo) {
+  const idSeguro = criarIdSeguro(termo);
+  const input = document.getElementById(`preco-${idSeguro}`);
+
+  if (!input) {
+    return;
+  }
+
+  let valor = input.value.trim();
+
+  if (valor !== "" && !valor.toLowerCase().startsWith("r$")) {
+    valor = `R$ ${valor}`;
+  }
+
+  const valores = obterValoresPreciso();
+
+  valores[termo] = valor;
+
+  localStorage.setItem("valoresPrecisoColecao", JSON.stringify(valores));
+
+  mostrarPrecisoColecao();
+
+  const resultado = document.getElementById("resultado");
+
+  if (resultado) {
+    resultado.style.display = "block";
+    resultado.innerHTML = `
+      <p><strong>Valor salvo:</strong></p>
+      <p>${termo} — ${valor || "sem valor"}</p>
+    `;
+  }
+}
+
+function removerValorPreciso(termo) {
+  const valores = obterValoresPreciso();
+
+  delete valores[termo];
+
+  localStorage.setItem("valoresPrecisoColecao", JSON.stringify(valores));
+}
