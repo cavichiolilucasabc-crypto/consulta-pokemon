@@ -805,3 +805,81 @@ body.tema-claro .limpar {
     margin-top: 4px;
   }
 }
+.preciso-topo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+}
+
+.texto-preciso-compacto {
+  flex: 1;
+  min-width: 0;
+}
+
+.valor-salvo {
+  color: #facc15;
+  font-weight: bold;
+  margin-left: 4px;
+}
+
+.acoes-preciso-compactas {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-left: auto;
+}
+
+.acao-mini {
+  width: 34px;
+  min-width: 34px;
+  height: 34px;
+  padding: 0;
+  border-radius: 10px;
+  font-size: 14px;
+  box-shadow: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.editar-mini {
+  background: linear-gradient(145deg, #38bdf8, #0284c7);
+  color: #ffffff;
+}
+
+.remover-mini {
+  background: linear-gradient(145deg, #ef4444, #b91c1c);
+  color: #ffffff;
+}
+
+.editar-valor-btn {
+  display: none;
+}
+
+.linha-preciso .acoes-historico {
+  display: none;
+}
+
+@media (max-width: 520px) {
+  .preciso-topo {
+    flex-direction: row;
+  }
+
+  .texto-preciso-compacto {
+    font-size: 14px;
+    padding: 11px;
+  }
+
+  .valor-salvo {
+    display: inline;
+    margin-left: 4px;
+  }
+
+  .acao-mini {
+    width: 32px;
+    min-width: 32px;
+    height: 32px;
+    font-size: 13px;
+  }
+}
