@@ -4,8 +4,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Consulta de Cartas Pokémon</title>
-  <meta name="theme-color" content="#111827">
-  <link rel="manifest" href="/manifest.json">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -14,22 +12,34 @@
     <h1>Consulta de Cartas Pokémon</h1>
 
     <p class="descricao">
-      Digite o nome, número ou código da carta para buscar direto na Liga Pokémon.
+      Digite o nome do Pokémon, selecione uma sugestão e depois informe o código da carta.
     </p>
 
     <div class="box-busca">
+
+      <input 
+        type="text" 
+        id="campoPokemon" 
+        placeholder="Nome do Pokémon. Ex: Pikachu"
+        autocomplete="off"
+      >
+
+      <div id="sugestoesPokemon" class="sugestoes"></div>
+
       <input 
         type="text" 
         id="campoCarta" 
-        placeholder="Ex: Pikachu, Charizard, 025/198"
+        placeholder="Código da carta. Ex: 84131"
       >
 
       <button onclick="buscarCarta()">
         Buscar preço
       </button>
+
     </div>
 
     <div id="resultado" class="resultado"></div>
+
     <div id="historico" class="historico"></div>
   </main>
 
