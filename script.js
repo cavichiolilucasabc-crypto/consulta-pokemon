@@ -1,7 +1,5 @@
 function buscarCarta() {
   const campo = document.getElementById("campoCarta");
-  const resultado = document.getElementById("resultado");
-
   const termo = campo.value.trim();
 
   if (termo === "") {
@@ -9,17 +7,20 @@ function buscarCarta() {
     return;
   }
 
-  abrirResultado(termo);
+  abrirNovaAba(termo);
   salvarHistorico(termo);
 
   campo.value = "";
 }
 
-function abrirResultado(termo) {
-  const resultado = document.getElementById("resultado");
+function gerarUrlLiga(termo) {
   const termoFormatado = encodeURIComponent(termo);
+  return `https://www.ligapokemon.com.br/?card=${termoFormatado}&view=cards/search`;
+}
 
-  const urlLiga = `https://www.ligapokemon.com.br/?card=${termoFormatado}&view=cards/search`;
+function abrirNovaAba(termo) {
+  const resultado = document.getElementById("resultado");
+  const urlLiga = gerarUrlLiga(termo);
 
   resultado.style.display = "block";
 
@@ -31,6 +32,8 @@ function abrirResultado(termo) {
       </a>
     </p>
   `;
+
+  window.open(urlLiga, "_blank");
 }
 
 function salvarHistorico(termo) {
@@ -60,7 +63,7 @@ function mostrarHistorico() {
     <h2>Últimas buscas</h2>
     <div class="lista-historico">
       ${historico.map(item => `
-        <button class="item-historico" onclick="abrirResultado('${item.replace(/'/g, "\\'")}')">
+        <button class="item-historico" onclick="abrirNovaAba('${item.replace(/'/g, "\\'")}')">
           ${item}
         </button>
       `).join("")}
