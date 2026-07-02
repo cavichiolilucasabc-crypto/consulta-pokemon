@@ -726,3 +726,48 @@ body.tema-claro .limpar {
     width: 100%;
   }
 }
+.linha-preciso {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  background: #1f2937;
+  border: 2px solid #a855f7;
+  border-radius: 14px;
+  padding: 12px;
+}
+
+.texto-preciso {
+  width: 100%;
+  border-color: #a855f7;
+}
+
+.preco-area {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 8px;
+}
+
+.preco-input {
+  background: #fef9c3;
+  color: #713f12;
+  border: 2px solid #facc15;
+}
+
+.preco-salvar-btn {
+  width: auto;
+  padding: 12px;
+  font-size: 14px;
+  background: linear-gradient(145deg, #22c55e, #16a34a);
+  color: #052e16;
+  box-shadow: 0 4px 0 #166534;
+}
+
+@media (max-width: 520px) {
+  .preco-area {
+    grid-template-columns: 1fr;
+  }
+
+  .preco-salvar-btn {
+    width: 100%;
+  }
+}
