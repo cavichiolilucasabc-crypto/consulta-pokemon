@@ -74,3 +74,40 @@ button:hover {
   color: #facc15;
   font-weight: bold;
 }
+.historico {
+  margin-top: 24px;
+}
+
+.historico h2 {
+  font-size: 18px;
+  margin-bottom: 12px;
+}
+
+.lista-historico {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.item-historico {
+  background: #374151;
+  color: #ffffff;
+  text-align: left;
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid #4b5563;
+}
+
+.item-historico:hover {
+  background: #4b5563;
+}
+
+.limpar {
+  margin-top: 12px;
+  background: #ef4444;
+  color: #ffffff;
+}
+
+.limpar:hover {
+  background: #dc2626;
+}
